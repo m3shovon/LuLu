@@ -1,50 +1,13 @@
-# from django.shortcuts import render, get_object_or_404, redirect
-# from .models import Project, Task
-# from .forms import ProjectForm, TaskForm
-
-# def project_list(request):
-#     projects = Project.objects.all()
-#     return render(request, 'App_Task/project_list.html', {'projects': projects})
-
-# def project_detail(request, pk):
-#     project = get_object_or_404(Project, pk=pk)
-#     tasks = project.tasks.all()
-#     return render(request, 'App_Task/project_detail.html', {'project': project, 'tasks': tasks})
-
-# def project_create(request):
-#     if request.method == 'POST':
-#         form = ProjectForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('App_Task:project_list')
-#     else:
-#         form = ProjectForm()
-#     return render(request, 'App_Task/project_form.html', {'form': form})
-
-# def task_create(request, project_id):
-#     project = get_object_or_404(Project, id=project_id)
-#     if request.method == 'POST':
-#         form = TaskForm(request.POST)
-#         if form.is_valid():
-#             task = form.save(commit=False)
-#             task.project = project
-#             task.save()
-#             return redirect('App_Task:project_detail', pk=project.id)
-#     else:
-#         form = TaskForm(initial={'project': project})
-#     return render(request, 'App_Task/task_form.html', {'form': form})
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
-from .models import Project, Task
+from .models import Project, Task, Notes
 from App_Auth.models import CustomerProfile
-from App_Task.forms import ProjectForm, TaskForm
+from App_Task.forms import ProjectForm, TaskForm, NoteForm
 from django.core.exceptions import PermissionDenied
-from django.views.generic import CreateView, UpdateView, ListView, DetailView, View, TemplateView, DeleteView
+
 # import datetime
 from datetime import datetime
 
@@ -237,4 +200,46 @@ def delete_task(request, pk):
 #     task_count = tasks.count()
 #     return render(request, 'App_Task/tasks_by_status.html', {'tasks': tasks, 'status': status,  'task_count': task_count})
 
+def add_note_view(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('App_Auth:home')  # Redirect to a relevant page
+    else:
+        form = NoteForm()
+    return render(request, 'add_note.html', {'form': form})
 
+def add_note_view(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('App_Auth:home')
+    else:
+        form = NoteForm()
+    return render(request, 'add_note.html', {'form': form})
+
+def edit_note_view(request, pk):
+    note = get_object_or_404(Notes, pk=pk)
+    if request.method == 'POST':
+        form = NoteForm(request.POST, instance=note)
+        if form.is_valid():
+            form.save()
+            return redirect('App_Auth:home')
+    else:
+        form = NoteForm(instance=note)
+    return render(request, 'App_Task/edit_note.html', {'form': form})
+
+def delete_note_view(request, pk):
+    note = get_object_or_404(Notes, pk=pk)
+    if request.method == 'POST':
+        note.delete()
+        return redirect('App_Auth:home')
+    return render(request, 'App_Task/delete_note.html', {'note': note})
+
+def mark_complete_view(request, pk):
+    note = get_object_or_404(Notes, pk=pk)
+    note.is_completed = True
+    note.save()
+    return redirect('App_Auth:home')

@@ -1,7 +1,7 @@
 from tkinter import Widget
 from django import forms
 from django.core.exceptions import ValidationError
-from App_Task.models import Task, Project
+from App_Task.models import Task, Project, Notes
 from App_Auth.models import CustomerProfile
 # from django.contrib.admin.widgets import AdminDateWidget
 from tempus_dominus.widgets import DateTimePicker
@@ -52,3 +52,13 @@ class TaskForm(forms.ModelForm):
 #             if employee in self.task.employees.all():
 #                 raise ValidationError(f'{employee} is already assigned to this task')
 #         return cleaned_data
+
+
+class NoteForm(forms.ModelForm):
+    class Meta:
+        model = Notes
+        fields = ['title', 'description']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Note Title'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+        }

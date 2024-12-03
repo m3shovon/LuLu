@@ -8,6 +8,12 @@ from App_Auth import models as App_AuthModel
 from App_Auth import forms as App_AuthForms
 from django.db.models import Subquery, OuterRef, Value
 from django.db.models.functions import Coalesce
+from App_Task.models import Notes
+
+# Home
+def home(request):
+    notes = Notes.objects.all().order_by('-created_at')
+    return render(request, "App_Auth/home.html",  {'notes': notes})
 
 # 404 Error
 def handle_not_found(request,exception):
