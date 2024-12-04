@@ -4,5 +4,5 @@ from django.contrib import admin
 
 from App_Auth import models
 
-admin.site.register(models.User)
+# admin.site.register(models.User)
 admin.site.register(models.CustomerProfile)

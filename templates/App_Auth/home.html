@@ -68,22 +68,33 @@
                 {% endfor %}
             </div> -->
 
-            <div class="mt-32">
-                <div class="tab-slide wrapper-tab-task">
+            <div class="pt-30">
+                <div class="section-title d-flex justify-content-between align-items-center">
+                    <h3>My Notes</h3>
+                    <!-- <a href="" class="font-title-btn text-black-5">View All</a> -->
+                </div>
+                <div class="tab-slide wrapper-tab-task mt-20">
                     <ul class="nav nav-tabs task-tab" role="tablist">
                         <li class="item-slide-effect"></li>
                         <li class="nav-item active" role="presentation">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#allTask">All Tasks</button>
+                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#allTask">
+                                All Notes <span class="badge bg-primary">{{ total_notes_count }}</span>
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#progress">In Progress</button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#progress">
+                                In Progress <span class="badge bg-danger">{{ in_progress_count }}</span>
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#completed">Completed</button>
+                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#completed">
+                                Completed <span class="badge bg-success">{{ completed_count }}</span>
+                            </button>
                         </li>
                     </ul>
                 </div>
                 <div class="tab-content">
+
                     <!-- All Tasks Tab -->
                     <div class="tab-pane fade active show" id="allTask" role="tabpanel">
                         <div class="accordion wrap-task-accordion" id="accordionPanelsStayOpenExample">
@@ -91,7 +102,7 @@
                                 <div class="pb-20 header-task accordion-button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                                     <div class="title-task">
                                         <h6 class="text-black-2">All Notes</h6>
-                                        <span class="num-task type-1">{{ notes.count }}</span>
+                                        <span class="num-task type-1">{{ total_notes_count }}</span>
                                     </div>
                                     <span class="icon-more text-black-5"></span>
                                 </div>
@@ -99,18 +110,35 @@
                                     <ul>
                                         {% for note in notes %}
                                         <li class="list-task-item mt-12">
-                                            <input type="checkbox" id="task{{ note.id }}" class="radio-check success" {% if note.is_completed %}checked{% endif %}>
+                                            <!-- <input type="checkbox" id="task{{ note.id }}" class="radio-check success" 
+                                            {% if note.is_completed %}checked{% endif %}> -->
                                             <label for="task{{ note.id }}" class="content-task">
-                                                <div>
-                                                    <div class="font-title-btn text-black-2">{{ note.title }}</div>
-                                                    <p class="body-4 text-black-5 fw-5 mt-10">{{ note.description }}</p>
-                                                    <p class="body-4 text-black-5 fw-5">{{ note.created_at|date:"M d, Y H:i" }}</p>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="font-title-btn text-black-3">
+
+                                                        <h5>{{ note.title }} </h5>
+                                                        <ul class="mt-0 d-flex gap-0 meta-list">
+                                                            
+                                                            <li class="meta-item"><i class="icon-calendar fs-12"></i>{{ note.created_at|date:"M d, Y H:i" }}</li>
+                                                        </ul>
+                                                        <p class="body-4 text-black-5 fw-5 mt-10" style="font-size: 14px;">
+                                                            {{ note.description }}
+                                                        </p>
+                                                        
+                                                    </div>
+
                                                     <div class="mt-10">
-                                                        <a href="{% url 'App_Task:edit_note' note.id %}" class="btn btn-sm btn-primary">Edit</a>
-                                                        <a href="{% url 'App_Task:delete_note' note.id %}" class="btn btn-sm btn-danger">Delete</a>
+
+                                                        <a style="margin-left: 5px;" class="btn btn-sm btn-primary" href="{% url 'App_Task:edit_note' note.id %}">
+                                                            <i class="icon-edit fs-12"></i>
+                                                        </a>
+                                                        <a class="btn btn-sm btn-danger" href="{% url 'App_Task:delete_note' note.id %}">
+                                                            <i class="icon-trash fs-12"></i>
+                                                        </a>
                                                         {% if not note.is_completed %}
-                                                        <a href="{% url 'App_Task:mark_complete' note.id %}" class="btn btn-sm btn-success">Mark Complete</a>
-                                                        {% endif %}
+                                                        <a href="{% url 'App_Task:mark_complete' note.id %}" class="btn btn-sm btn-success"><i class="icon-tick fs-12"></i>
+                                                        </a>
+                                                    {% endif %}
                                                     </div>
                                                 </div>
                                             </label>
@@ -126,25 +154,36 @@
                     <div class="tab-pane fade" id="progress" role="tabpanel">
                         <div class="accordion wrap-task-accordion">
                             <div class="accordion-item mt-28">
-                                <div class="pb-20 header-task accordion-button">
+                                <div class="pb-20 header-task accordion-button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                                     <div class="title-task">
                                         <h6 class="text-black-2">In Progress Notes</h6>
-                                        <span class="num-task type-1">{{ notes|length }}</span>
+                                        <span class="num-task type-1">{{ in_progress_count }}</span>
                                     </div>
                                     <span class="icon-more text-black-5"></span>
                                 </div>
-                                <div>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                                     <ul>
-                                        {% for note in notes %}
-                                        {% if not note.is_completed %}
-                                        <li class="list-task-item mt-12">
-                                            <label class="content-task">
-                                                <div class="font-title-btn text-black-2">{{ note.title }}</div>
-                                                <p class="mt-10 body-4 text-black-5 fw-5">{{ note.created_at|date:"M d, Y H:i" }}</p>
-                                            </label>
+                                        {% if in_progress_notes %}
+                                            {% for note in in_progress_notes %}
+                                            <li class="list-task-item mt-12">
+                                                <label class="content-task">
+                                                    <div class="font-title-btn text-black-2">
+                                                        <h4>{{ note.title }}</h4>
+                                                        <ul class="mt-14 d-flex gap-8 meta-list">
+                                                            <li class="meta-item"><i class="icon-calendar fs-12"></i>{{ note.created_at|date:"M d, Y H:i" }}</li>
+                                                        </ul>
+                                                    </div>
+                                                    <p class="body-4 text-black-5 fw-5 mt-10">
+                                                        {{ note.description }}
+                                                    </p>
+                                                </label>
+                                            </li>
+                                            {% endfor %}
+                                        {% else %}
+                                        <li class="list-task-item mt-12 text-center">
+                                            <p class="body-4 text-black-5 fw-5 mt-10">No Progress Available</p>
                                         </li>
                                         {% endif %}
-                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div>
@@ -155,21 +194,29 @@
                     <div class="tab-pane fade" id="completed" role="tabpanel">
                         <div class="accordion wrap-task-accordion">
                             <div class="accordion-item mt-28">
-                                <div class="pb-20 header-task accordion-button">
+                                <div class="pb-20 header-task accordion-button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
                                     <div class="title-task">
                                         <h6 class="text-black-2">Completed Notes</h6>
-                                        <span class="num-task type-1">{{ notes|length }}</span>
+                                        <span class="num-task type-1">{{ completed_count }}</span>
                                     </div>
                                     <span class="icon-more text-black-5"></span>
                                 </div>
-                                <div>
+                                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                                     <ul>
                                         {% for note in notes %}
                                         {% if note.is_completed %}
                                         <li class="list-task-item mt-12">
                                             <label class="content-task">
-                                                <div class="font-title-btn text-black-2">{{ note.title }}</div>
-                                                <p class="mt-10 body-4 text-black-5 fw-5">Completed on {{ note.updated_at|date:"M d, Y H:i" }}</p>
+                                                <div class="font-title-btn text-black-2">
+                                                    <h4>{{ note.title }}</h4>
+                                                    <ul class="mt-14 d-flex gap-8 meta-list">
+                                                                
+                                                        <li class="meta-item"><i class="icon-calendar fs-12"></i>{{ note.created_at|date:"M d, Y H:i" }}</li>
+                                                    </ul>
+                                                </div>
+                                                <p class="body-4 text-black-5 fw-5 mt-10">
+                                                    {{ note.description }}
+                                                </p>
                                             </label>
                                         </li>
                                         {% endif %}
@@ -181,7 +228,6 @@
                     </div>
                 </div>
             </div>
-   
             
 
             <!-- Applications -->

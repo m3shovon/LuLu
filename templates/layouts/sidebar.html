@@ -5,21 +5,21 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content modal-sidebar">
                 <div class="sidebar-header" style="background-image: url('images/background/line-logo.html')">
-                    <a href="index-2.html" class="sidebar-logo">
-                        <img src="images/logo/168.png" alt="img">
+                    <a href="#" class="sidebar-logo">
+                        <img src="{% static 'assets/images/logo/M3S.jpg' %}" alt="img">
                     </a>
-                    <p>Task Management App</p>
+                    <p>LuLu</p>
                 </div>
                 <div class="sidebar-content">
-                    <div class="d-flex gap-10 align-items-center pb-20 line-bt">
+                    <!-- <div class="d-flex gap-10 align-items-center pb-20 line-bt">
                         <div class="avatar avt-40">
-                            <img src="images/avt/avt2.jpg" alt="img">
+                            <img src="{% static 'assets/images/logo/M3S.jpg' %}" alt="img">
                         </div>
                         <div class="content-right">
                             <p class="text-1">Good morning</p>
-                            <h6 class="fw-7">Jennifer Lyine</h6>
+                            <h6 class="fw-7">Boss, Good Day</h6>
                         </div>
-                    </div>
+                    </div> -->
                     <ul class="pt-20 pb-20">
                         <li class="text-sm-start text-uppercase fw-7 text-2">Main menu</li>
                         <li class="mt-18 sub-menu" id="accordionExample">
@@ -99,7 +99,7 @@
                             </a>
                         </li>
                         <li class="mt-16">
-                            <a href="sign-in.html" class="nav-link-item not-link">
+                            <a href="{% url 'App_Auth:logout' %}" class="nav-link-item not-link">
                                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                     <path opacity="0.4" d="M1.66602 5.37258C1.66602 3.33008 3.35788 1.66675 5.43646 1.66675H9.57072C11.6451 1.66675 13.3327 3.32508 13.3327 5.36425V14.6276C13.3327 16.6709 11.6408 18.3334 9.56139 18.3334H5.42883C3.35364 18.3334 1.66602 16.6751 1.66602 14.6359V13.8526V5.37258Z" fill="#D3D5DA"/>
                                     <path d="M18.149 9.54579L15.7775 7.12162C15.5324 6.87162 15.138 6.87162 14.8937 7.12329C14.6502 7.37495 14.651 7.78079 14.8953 8.03079L16.1947 9.35828H14.9489H7.95696C7.61203 9.35828 7.33203 9.64579 7.33203 9.99995C7.33203 10.355 7.61203 10.6416 7.95696 10.6416H16.1947L14.8953 11.9691C14.651 12.2191 14.6502 12.625 14.8937 12.8766C15.0162 13.0025 15.1761 13.0658 15.3368 13.0658C15.4959 13.0658 15.6558 13.0025 15.7775 12.8783L18.149 10.455C18.2667 10.3341 18.3333 10.1708 18.3333 9.99995C18.3333 9.82995 18.2667 9.66662 18.149 9.54579Z" fill="#D3D5DA"/>
@@ -250,6 +250,7 @@
             </div>
         </div>
     </div>
+
     <!-- modal component -->
     <div class="modal fade modalLeft" id="modalComponent">
         <div class="modal-dialog" role="document">

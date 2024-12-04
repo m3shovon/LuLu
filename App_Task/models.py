@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from Core import settings
 from datetime import datetime
+from App_Auth.models import CustomerProfile
 
 class Type(models.Model):
     name = models.CharField(max_length=100)
@@ -21,7 +22,7 @@ class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     project_type = models.CharField(max_length=100, choices=[('Personal', 'Personal'), ('Work', 'Work')], default='Personal')
-    assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='project_assigned')
+    assigned_to = models.ManyToManyField(CustomerProfile, blank=True, related_name='project_assigned')
     start_date = models.DateField()
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -62,7 +63,7 @@ class Task(models.Model):
     project = models.ForeignKey(Project, related_name='tasks', on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
-    assigned_to = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='task_assigned')
+    assigned_to = models.ManyToManyField(CustomerProfile, blank=True, related_name='task_assigned')
     task_type = models.ForeignKey(Type, on_delete=models.SET_NULL, null=True, blank=True, related_name='tasks_type')
     label = models.ManyToManyField(Label, blank=True, related_name='task_label')
     status = models.CharField(max_length=100, choices=[('Pending', 'Pending'), ('In Progress', 'In Progress'), ('Completed', 'Completed'), ('Incompleted', 'Incompleted')], default='Pending')

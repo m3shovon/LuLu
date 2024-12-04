@@ -88,7 +88,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'Core.wsgi.application'
 
-AUTH_USER_MODEL = 'App_Auth.User'
+# AUTH_USER_MODEL = 'App_Auth.User'
 
 
 # Database
@@ -100,6 +100,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+LOGIN_URL = '/login/'
 
 # DATABASES = {
 #     'default': {
